@@ -1,0 +1,8 @@
+._container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+._3_digit_input{
+  width: 45px;
+}
