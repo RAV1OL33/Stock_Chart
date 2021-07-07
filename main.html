@@ -1,0 +1,119 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.0/chart.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<div class="">
+  <div class="">
+    <span id="stocks_array_legth"></span>
+  </div>
+  <div class="">
+    <span id="stocks_counter"></span>
+  </div>
+</div>
+<div class="">
+  <div class="">Сортировать по:</div>
+
+  <div class="">
+    <input type="button" value="Выплачиваемые дивиденды" onclick="sortTable('current_dividend_procent', 1)">
+    <input type="button" value="Показатель роста дивидендов" onclick="sortTable('div_grow', 1)">
+      <input type="button" value="Сброс" onclick="sortTable()">
+  </div>
+</div>
+<table id="stocks_table">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>Company name</th>
+      <th>Years paying</th>
+      <th>Div Yield</th>
+      <th>DGR 5Y</th>
+    </tr>
+  </thead>
+  <tbody id='stocks_container'></tbody>
+</table>
+<hr>
+<div class="_container">
+  <div class=""><input type="button" value="Построить графики" onclick="DrawSelectedStocks()"></div>
+  <div class=""><label for="calc_range"> Срок прогнозирования</label>
+    <select id="calc_range_select" name="calc_range" onchange="updateCharts()">
+      <option value="5" selected>Пять лет</option>
+      <option value="10">Десять лет</option>
+      <option value="15">Пятнадцать лет</option>
+      <option value="20">Двадцать лет</option>
+      <option value="25">Двадцать пять лет</option>
+      <option value="30">Тридцать лет</option>
+    </select>
+  </div>
+  <div class=""><input type="button" value="Настройка графика ≡" onclick="DrawSelectedStocks()"></div>
+</div>
+
+<hr>
+
+<div class="_container">
+  <div class="_column">
+    <div class="">
+      <label for="start_capital"> Стартовый капитал</label>
+      <input id="capital_input" name="start_capital" type="number" value="1000" oninput="updateCharts()">
+    </div>
+    <div class="">
+      <label for="replenishment_period"> Частота пополнений капитала</label>
+      <select name="replenishment_period" id="replenishment_period_select" onchange="updateCharts()">
+        <option value="1" selected>Каждый месяц</option>
+        <option value="2">Каждые два месяца</option>
+        <option value="3">Каждые три месяца</option>
+        <option value="4">Каждые четыре месяца</option>
+        <option value="6">Каждые полгода</option>
+        <option value="12">Каждый год</option>
+      </select>
+    </div>
+    <div class="">
+      <label for="replenishment_value"> Сумма пополнений</label>
+      <input id="replenishment_value_input" name="replenishment_value" value="100" type="number" oninput="updateCharts()" min="0">
+    </div>
+    <div class="">
+      <label for="payment_period"> Период выплат дивидендов</label>
+      <select name="payment_period" id="payment_period_select" onchange="updateCharts()">
+        <option value="1">Каждый месяц</option>
+        <option value="2">Каждые два месяца</option>
+        <option value="3" selected>Каждые три месяца</option>
+        <option value="4">Каждые четыре месяца</option>
+        <option value="6">Каждые полгода</option>
+        <option value="12">Каждый год</option>
+      </select>
+    </div>
+  </div>
+  <div class="_column">
+    <div class="">
+      <label for="tax_value"> Процент налогов</label>
+      <input id="tax_value" name="tax_value" class="_3_digit_input" type="number" oninput="updateCharts()" value="13" max="100">
+    </div>
+    <div class="">
+      <label for="inflation_value"> Процент инфляции</label>
+      <input id="inflation_value" name="inflation_value" class="_3_digit_input" type="number" oninput="updateCharts()" value="2.2" max="100">
+    </div>
+    <div class=""><label for="deposit">Реинвестировать дивиденды?</label>
+      <input type="checkbox" name="deposit" id="deposit" oninput="updateCharts()" checked>
+    </div>
+    <div class=""><label for="is_tax">Показывать с вычетом налогов?</label>
+      <input type="checkbox" name="is_tax" id="is_tax" oninput="updateCharts()" checked>
+    </div>
+  </div>
+</div>
+
+<!--
+<div class="">Процент дивидендной доходности 
+  <span id="start_dividend_procent">5</span>%</div>
+-->
+
+<hr>
+<div class="" style="width: 100%; margin-top: 25px;">
+  <canvas id="capital_chart" width="" height=""></canvas>
+</div>
+<div class="" style="width: 100%; margin-top: 25px;">
+  <span>Сумма накопленных дивидендов за указанный период</span>
+  <canvas id="dividend_chart" width="" height=""></canvas>
+</div>
+<div class="" style="width: 100%; margin-top: 25px;">
+  <span>Рост % дивидентов за указанный период</span>
+  <canvas id="procent_chart" width="" height=""></canvas>
+</div>
