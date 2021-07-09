@@ -4,29 +4,13 @@
 <link rel="stylesheet" href="style.css">
 <script src="script.js" defer></script>
 <title> Stock Charts</title>
-<body>
-  <div class="">
-    <div class="">
-      <span id="stocks_array_legth"></span>
-    </div>
-    <div class="">
-      <span id="stocks_counter"></span>
-    </div>
-  </div>
-  <div class="">
-    <div class="">Сортировать по:</div>
 
-    <div class="">
-      <input type="button" value="Выплачиваемые дивиденды" onclick="sortTable('current_dividend_procent', 1)">
-      <input type="button" value="Показатель роста дивидендов" onclick="sortTable('div_grow', 1)">
-      <input type="button" value="Сброс" onclick="sortTable()">
-    </div>
-  </div>
-  <table id="stocks_table">
+<body>
+  <table id="selected_stocks_table">
     <thead>
       <tr>
-        <th></th>
-        <th></th>
+        <th style="width:5%"></th>
+        <th style="width: 10%; text-align: end; padding-right: 2px;"></th>
         <th></th>
         <th>Company name</th>
         <th>Years paying</th>
@@ -36,6 +20,49 @@
     </thead>
     <tbody id='stocks_container'></tbody>
   </table>
+
+  <div class="_stocks_stat">
+    <div class="">
+      <span id="stocks_array_legth"></span>
+      <span id="stocks_counter"></span>
+    </div>
+    <div class="_select">
+      <span class="">Показать: </span>
+      <div class="_variant" onclick="SelectArrayLength(this)">20</div>
+      <div class="_variant" onclick="SelectArrayLength(this)">50</div>
+      <div class="_variant _active" onclick="SelectArrayLength(this)">Все</div>
+    </div>
+  </div>
+  <div class="_filter">
+    <div class="">
+      <div class="">Поиск по названию:</div>
+      <input type="text">
+    </div>
+    <div class="">
+      <div class="">Фильтровать по:</div>
+      <div class="">
+        <input type="button" value="Выплачиваемые дивиденды" onclick="sortTable('current_dividend_procent', 1)">
+        <input type="button" value="Показатель роста дивидендов" onclick="sortTable('div_grow', 1)">
+        <input type="button" value="Сбросить" onclick="sortTable()">
+      </div>
+    </div>
+
+  </div>
+  <div class="">
+    <table id="stocks_table">
+      <thead>
+        <tr>
+          <th style="width: 2%"></th>
+          <th style="width: 5%; text-align: end; padding-right: 2px;"></th>
+          <th style="width: 6%"></th>
+          <th style="width: 45%">Company name</th>
+          <th style="width: 10%">Years paying</th>
+          <th style="width: 10%">Div Yield</th>
+          <th style="width: 10%">DGR 5Y</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
   <hr>
   <div class="_container">
     <div class=""><input type="button" value="Построить графики" onclick="DrawSelectedStocks()"></div>
