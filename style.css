@@ -1,5 +1,3 @@
----
----
 body {
   margin: auto;
   max-width: 1000px;
@@ -23,25 +21,22 @@ body {
   font-weight: 600;
   color: #090974;
 }
-._stocks_stat {
-  ._select {
-    display: flex;
+._stocks_stat ._select{
+   display: flex;
     gap: 15px;
-    ._variant{
-      &._active{
-        font-weight: 600;
-        color: green;
-      }
-    }
-    div {
-      text-decoration: underline;
-      cursor: pointer;
-      &:hover {
-        color: green;
-      }
-    }
-  }
 }
+._stocks_stat ._select ._variant._active{
+    font-weight: 600;
+        color: green;
+}
+._stocks_stat ._select div{
+   text-decoration: underline;
+      cursor: pointer;
+}
+._stocks_stat ._select div: hover{
+   color: green;
+}
+
 
 table {
   width: 100%;
