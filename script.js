@@ -1,3 +1,4 @@
+
 const database_url =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRqM6TY3M2SyIZdO1ZyrKSSCV3f_cunsz1aPlBNd0iiRGm-2tCAUqhFLEmH-S789fmRa7sML71tR_WR/pub?gid=0&single=true&output=csv";
 
@@ -36,6 +37,8 @@ var calc_range = parseInt(calc_range_select.value);
 var start_capital = parseInt(capital_input.value);
 
 var dividend_capital = 0;
+//vars
+var stock_array_length = 0;
 //options checkboxes
 var deposit = is_deposit_input.checked;
 var tax_status = is_tax_checkbox.checked;
@@ -85,17 +88,15 @@ function createStocksTable(stocks) {
       "beforeend",
       `
       <tr>
-        <td>
-          <input id="${
-            stock.id
-          }" type="checkbox" oninput="updateStocksList(this)" > 
+        <td style="width:2%">
+          <input id="${stock.id}" type="checkbox" oninput="updateStocksList(this)"> 
         </td>
-        <td> ${index + 1})</td>
-        <td> ${stock.symbol}</td>
-        <td> ${stock.name}</td>
-        <td> ${stock.years}</td>
-        <td> ${stock.current_dividend_procent * 100}%</td>
-        <td> ${stock.div_grow * 100}%</td>
+        <td style="width: 5%; text-align: end; padding-right: 2px;"> ${index + 1})</td>
+        <td style="width:6%"> ${stock.symbol}</td>
+        <td style="width:45%"> ${stock.name}</td>
+        <td style="width:10%"> ${stock.years}</td>
+        <td style="width:10%"> ${Math.round(stock.current_dividend_procent * 10000) / 100}%</td>
+        <td style="width:10%"> ${Math.round(stock.div_grow * 10000) / 100}%</td>
       </tr>`
     );
   });
@@ -105,8 +106,7 @@ function createStocksTable(stocks) {
 }
 function sortTable(field = "id", direction = -1) {
   stocks_array.sort((stock_a, stock_b) => {return (stock_b[field] - stock_a[field]) * direction});
-  let stocks = stocks_array.slice(0, 20);
-  createStocksTable([...stocks]);
+  ShowSelectedStocks(stock_array_length);
 }
 
 function parseFields(string, field) {
@@ -163,6 +163,7 @@ function parseCSV(csv) {
 function getData(url) {
   $.ajax(url).done(function (result) {
     stocks_array = parseCSV(result);
+    stock_array_length = stocks_array.length;
     console.log('stocks_array[0]')
     console.log(stocks_array[0])
     sortTable();
@@ -174,7 +175,23 @@ function getData(url) {
     //console.log(parseCSV(result))
   });
 }
-
+function SelectArrayLength(element){
+  //console.log(element.value)
+  let target = document.getElementsByClassName('_variant');
+  console.log(target)
+  for (let i = 0; i < target.length; i++){
+    console.log(target[i])
+     target[i].className = target[i].className.replace(" _active", "");
+  }
+   
+  element.className += ' _active'; 
+  ShowSelectedStocks(element.innerText == 'Все' ? stocks_array.length : parseInt(element.innerText)) 
+}
+function ShowSelectedStocks(count = stocks_array.length){
+  stock_array_length = count;
+  let stocks = stocks_array.slice(0, stock_array_length);
+  createStocksTable([...stocks]);
+}
 function updateStocksList(stock) {
   if (stock.checked) 
     active_stocks_indexses_array.push(stock.id);
