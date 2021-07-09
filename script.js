@@ -1,4 +1,4 @@
-
+console.log('a')
 const database_url =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRqM6TY3M2SyIZdO1ZyrKSSCV3f_cunsz1aPlBNd0iiRGm-2tCAUqhFLEmH-S789fmRa7sML71tR_WR/pub?gid=0&single=true&output=csv";
 
