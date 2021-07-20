@@ -1,4 +1,4 @@
-console.log('a')
+console.log("a");
 const database_url =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRqM6TY3M2SyIZdO1ZyrKSSCV3f_cunsz1aPlBNd0iiRGm-2tCAUqhFLEmH-S789fmRa7sML71tR_WR/pub?gid=0&single=true&output=csv";
 
@@ -89,13 +89,19 @@ function createStocksTable(stocks) {
       `
       <tr>
         <td style="width:2%">
-          <input id="${stock.id}" type="checkbox" oninput="updateStocksList(this)"> 
+          <input id="${
+            stock.id
+          }" type="checkbox" oninput="updateStocksList(this)"> 
         </td>
-        <td style="width: 5%; text-align: end; padding-right: 2px;"> ${index + 1})</td>
+        <td style="width: 5%; text-align: end; padding-right: 2px;"> ${
+          index + 1
+        })</td>
         <td style="width:6%"> ${stock.symbol}</td>
         <td style="width:45%"> ${stock.name}</td>
         <td style="width:10%"> ${stock.years}</td>
-        <td style="width:10%"> ${Math.round(stock.current_dividend_procent * 10000) / 100}%</td>
+        <td style="width:10%"> ${
+          Math.round(stock.current_dividend_procent * 10000) / 100
+        }%</td>
         <td style="width:10%"> ${Math.round(stock.div_grow * 10000) / 100}%</td>
       </tr>`
     );
@@ -105,7 +111,10 @@ function createStocksTable(stocks) {
   stocks_array_legth.innerText = `Всего акций: ${stocks_array.length}`;
 }
 function sortTable(field = "id", direction = -1) {
-  stocks_array.sort((stock_a, stock_b) => {return (stock_b[field] - stock_a[field]) * direction});
+  stocks_array.sort((stock_a, stock_b) => {
+    return (stock_b[field] - stock_a[field]) * direction;
+  });
+  active_stocks_indexses_array = [];
   ShowSelectedStocks(stock_array_length);
 }
 
@@ -164,8 +173,8 @@ function getData(url) {
   $.ajax(url).done(function (result) {
     stocks_array = parseCSV(result);
     stock_array_length = stocks_array.length;
-    console.log('stocks_array[0]')
-    console.log(stocks_array[0])
+    console.log("stocks_array[0]");
+    console.log(stocks_array[0]);
     sortTable();
     //active_stocks_array = pushSelectedStocks([220,1]);
     //console.log("GetData fired. Response:");
@@ -175,33 +184,36 @@ function getData(url) {
     //console.log(parseCSV(result))
   });
 }
-function SelectArrayLength(element){
+function SelectArrayLength(element) {
   //console.log(element.value)
-  let target = document.getElementsByClassName('_variant');
-  console.log(target)
-  for (let i = 0; i < target.length; i++){
-    console.log(target[i])
-     target[i].className = target[i].className.replace(" _active", "");
+  let target = document.getElementsByClassName("_variant");
+  console.log(target);
+  for (let i = 0; i < target.length; i++) {
+    console.log(target[i]);
+    target[i].className = target[i].className.replace(" _active", "");
   }
-   
-  element.className += ' _active'; 
-  ShowSelectedStocks(element.innerText == 'Все' ? stocks_array.length : parseInt(element.innerText)) 
+
+  element.className += " _active";
+  ShowSelectedStocks(
+    element.innerText == "Все"
+      ? stocks_array.length
+      : parseInt(element.innerText)
+  );
 }
-function ShowSelectedStocks(count = stocks_array.length){
+function ShowSelectedStocks(count = stocks_array.length) {
   stock_array_length = count;
   let stocks = stocks_array.slice(0, stock_array_length);
   createStocksTable([...stocks]);
 }
 function updateStocksList(stock) {
-  if (stock.checked) 
-    active_stocks_indexses_array.push(stock.id);
-  else 
+  if (stock.checked) active_stocks_indexses_array.push(stock.id);
+  else
     active_stocks_indexses_array.splice(active_stocks_indexses_array.indexOf(stock.id), 1);
 }
 function pushSelectedStocks(index_array = active_stocks_indexses_array) {
   let stocks = [];
   index_array.forEach((i) => {
-    let stock = {...stocks_array[i]};
+    let stock = { ...stocks_array.find((s) => s.id == i) };
     stock.capital = start_capital;
     stock.capital_w_tax = start_capital;
     stocks.push(stock);
@@ -210,7 +222,6 @@ function pushSelectedStocks(index_array = active_stocks_indexses_array) {
 }
 function DrawSelectedStocks() {
   active_stocks_array = pushSelectedStocks();
-
   calc();
 }
 
@@ -219,7 +230,7 @@ getData(database_url);
 function calcIncome(index, tax = 1) {
   return (
     (active_stocks_array[index].capital *
-      (1 + active_stocks_array[index].current_dividend_procent * tax) *
+      (active_stocks_array[index].current_dividend_procent * tax) *
       payment_period) /
     12
   );
@@ -230,7 +241,9 @@ function period(is_deposit, stock_index) {
   let current_period = { is_deposit: is_deposit };
   if (is_deposit) {
     active_stocks_array[stock_index].capital += div_income;
+    //active_stocks_array[stock_index].capital = div_income;
     active_stocks_array[stock_index].capital_w_tax += div_income_w_tax;
+    //active_stocks_array[stock_index].capital_w_tax = div_income_w_tax;
   }
   current_period.income = div_income;
   current_period.income_w_tax = div_income_w_tax;
@@ -256,9 +269,9 @@ function year(c_year) {
 
 function log_dis() {
   years_array.forEach((y) => {
-    console.log(y);
+    console.log("Year: ", y);
     active_stocks_array.forEach((s) => {
-      console.log(s);
+      console.log("Stock ->", s);
     });
   });
 
@@ -363,8 +376,8 @@ function updateCharts() {
   payment_period = parseInt(payment_period_select.value);
   replenishment_value = parseFloat(replenishment_value_input.value);
   replenishment_period = parseInt(replenishment_period_select.value);
-console.log('stocks_array[0]')
-    console.log(stocks_array[0])
+  console.log("stocks_array[0]");
+  console.log(stocks_array[0]);
   calc();
 }
 function DrawCharts() {
