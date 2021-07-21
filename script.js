@@ -372,13 +372,15 @@ function ProcentChart() {
 function updateCharts() {
   deposit = is_deposit_input.checked;
   tax_status = is_tax_checkbox.checked;
+  start_capital = parseInt(capital_input.value);
   calc_range = parseInt(calc_range_select.value);
   payment_period = parseInt(payment_period_select.value);
   replenishment_value = parseFloat(replenishment_value_input.value);
   replenishment_period = parseInt(replenishment_period_select.value);
   console.log("stocks_array[0]");
   console.log(stocks_array[0]);
-  calc();
+  //calc();
+  DrawSelectedStocks();
 }
 function DrawCharts() {
   PureCapitalChart();
